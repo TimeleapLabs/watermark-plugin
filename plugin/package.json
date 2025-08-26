@@ -13,6 +13,8 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "@repo/models": "workspace:*"
+    "@repo/models": "workspace:*",
+    "sharp": "^0.34.3",
+    "uuid25": "^0.1.5"
   }
 }

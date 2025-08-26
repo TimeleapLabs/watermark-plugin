@@ -1,4 +1,4 @@
-# go-hello-client
+# watermark-plugin
 
 To install dependencies:
 

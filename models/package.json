@@ -1,0 +1,20 @@
+{
+  "name": "@repo/models",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "type": "module",
+  "private": true,
+    "scripts": {
+    "build": "sia compile watermarker.sia -o dist/watermarker.ts"
+  },
+  "exports": {
+  "./watermarker": "./dist/watermarker.ts"
+  },
+  "devDependencies": {
+    "@timeleap/sia-schema": "^1.8.0",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

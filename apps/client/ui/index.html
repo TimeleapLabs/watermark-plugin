@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Watermarker</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #3b82f6;
+            animation: spin 1s ease infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .file-upload-label {
+            position: relative;
+            cursor: pointer;
+            background-color: #fff;
+            border-radius: 0.375rem; /* rounded-md */
+            font-weight: 500; /* font-medium */
+            color: #3b82f6; /* text-blue-600 */
+            transition: color 0.15s ease-in-out;
+        }
+
+        .file-upload-label:hover {
+            color: #2563eb; /* hover:text-blue-500 */
+        }
+        
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <div class="container bg-white rounded-xl shadow-2xl p-8 lg:p-12 space-y-8 border border-gray-200">
+        <div class="text-center">
+            <h1 class="text-3xl lg:text-4xl font-extrabold text-gray-900 mb-2">Image Watermarker</h1>
+            <p class="text-gray-500">Add a custom watermark to your image.</p>
+        </div>
+
+        <form id="watermarkForm" class="space-y-6">
+            <!-- Image Upload -->
+            <div>
+                <label for="imageUpload" class="block text-sm font-medium text-gray-700 mb-2">
+                    Upload an Image
+                </label>
+                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                    <div class="space-y-1 text-center">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m-4-4l6.172 6.172a4 4 0 010 5.656L28 44" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <div class="flex flex-col sm:flex-row text-sm text-gray-600 justify-center items-center">
+                            <label for="image-upload" class="file-upload-label">
+                                <span id="upload-text">Upload a file</span>
+                                <input id="image-upload" name="image" type="file" class="sr-only" accept="image/*" required>
+                            </label>
+                            <p class="pl-1">or drag and drop</p>
+                        </div>
+                        <p id="file-name" class="text-xs text-gray-500 mt-2">
+                            PNG, JPG, GIF up to 10MB
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Image Preview -->
+            <div id="image-preview-container" class="hidden mt-4">
+                <p class="block text-sm font-medium text-gray-700 mb-2">Image Preview</p>
+                <img id="image-preview" class="w-full h-auto rounded-md shadow-lg border border-gray-300 object-contain">
+            </div>
+
+            <!-- Watermark Text -->
+            <div>
+                <label for="watermarkText" class="block text-sm font-medium text-gray-700 mb-2">
+                    Watermark Text
+                </label>
+                <input type="text" id="watermarkText" name="watermarkText" placeholder="Your watermark here..."
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+            <!-- Watermark Location -->
+            <div>
+                <label for="location" class="block text-sm font-medium text-gray-700 mb-2">
+                    Watermark Location
+                </label>
+                <select id="location" name="location" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    <option value="southeast" selected>Southeast (bottom-right)</option>
+                    <option value="north">North (top-center)</option>
+                    <option value="northeast">Northeast (top-right)</option>
+                    <option value="east">East (right-center)</option>
+                    <option value="south">South (bottom-center)</option>
+                    <option value="southwest">Southwest (bottom-left)</option>
+                    <option value="west">West (left-center)</option>
+                    <option value="northwest">Northwest (top-left)</option>
+                    <option value="center">Center</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="submitBtn" class="w-full inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                Add Watermark
+            </button>
+        </form>
+
+        <!-- Result Display Area -->
+        <div id="resultContainer" class="mt-8 space-y-4 text-center">
+            <div id="loading" class="hidden flex justify-center items-center">
+                <div class="loading-spinner"></div>
+            </div>
+            <img id="resultImage" class="hidden w-full h-auto rounded-md shadow-lg border border-gray-300">
+            <p id="message" class="text-red-500 hidden"></p>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('watermarkForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const loading = document.getElementById('loading');
+        const resultImage = document.getElementById('resultImage');
+        const messageEl = document.getElementById('message');
+        const fileInput = document.getElementById('image-upload');
+        const fileNameDisplay = document.getElementById('file-name');
+        const imagePreviewContainer = document.getElementById('image-preview-container');
+        const imagePreview = document.getElementById('image-preview');
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                fileNameDisplay.textContent = file.name;
+                
+                // Show a preview of the selected image
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imagePreview.src = e.target.result;
+                    imagePreviewContainer.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+
+            } else {
+                fileNameDisplay.textContent = 'PNG, JPG, GIF up to 10MB';
+                imagePreviewContainer.classList.add('hidden');
+                imagePreview.src = '';
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Clear previous results and messages
+            resultImage.classList.add('hidden');
+            messageEl.classList.add('hidden');
+            
+            // Show loading spinner
+            loading.classList.remove('hidden');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('http://localhost:3000/watermark', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Server error');
+                }
+
+                const imageBlob = await response.blob();
+                const imageUrl = URL.createObjectURL(imageBlob);
+
+                // Display the image
+                resultImage.src = imageUrl;
+                resultImage.onload = () => {
+                    URL.revokeObjectURL(imageUrl);
+                };
+                resultImage.classList.remove('hidden');
+                
+            } catch (error) {
+                console.error('An error occurred:', error);
+                messageEl.textContent = `Error: ${error.message}`;
+                messageEl.classList.remove('hidden');
+            } finally {
+                loading.classList.add('hidden');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Add Watermark';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "main": "src/index.ts",
   "scripts": {
-    "build": "bun build --target=bun --outdir=dist src/index.ts"
+    "build": "bun build --target=bun --outdir=dist src/index.ts",
+    "dev": "bun run index.ts",
+    "start": "bun run index.ts"
   },
   "dependencies": {
+    "@fastify/busboy": "^3.2.0",
     "@shared/models": "workspace:*"
   },
   "private": true,

@@ -1,20 +1,18 @@
 {
-  "name": "plugin",
+  "name": "@apps/client",
   "version": "1.0.0",
   "main": "index.ts",
-  "private": true,
   "scripts": {
     "build": "bun build --target=bun --outdir=dist index.ts"
   },
+  "dependencies": {
+    "@shared/models": "workspace:*"
+  },
+  "private": true,
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
-  },
-  "dependencies": {
-    "@repo/models": "workspace:*",
-    "sharp": "^0.34.3",
-    "uuid25": "^0.1.5"
   }
 }

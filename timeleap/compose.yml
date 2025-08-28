@@ -1,0 +1,67 @@
+services:
+  client:
+    restart: always
+    build:
+      context: ..
+      dockerfile: ./apps/client/Dockerfile
+    env_file:
+      - ../apps/client/.env
+    networks:
+      - timeleap
+    depends_on:
+      - plugin
+
+  plugin:
+    container_name: swiss.timeleap.watermarker
+    restart: always
+    depends_on:
+      - broker
+    build:
+      context: ..
+      dockerfile: ./apps/plugin/Dockerfile
+    env_file:
+      - ../apps/plugin/.env
+    networks:
+      - timeleap
+
+  broker:
+    image: ghcr.io/timeleaplabs/timeleap
+    restart: always
+    networks:
+      - timeleap
+    secrets:
+      - source: broker_secrets
+        target: /etc/timeleap/secrets.yaml
+    configs:
+      - source: config
+        target: /etc/timeleap/config.yaml
+    command: broker -s /etc/timeleap/secrets.yaml -c /etc/timeleap/config.yaml
+
+  worker:
+    image: ghcr.io/timeleaplabs/timeleap
+    restart: always
+    networks:
+      - timeleap
+    depends_on:
+      - broker
+      - plugin
+    secrets:
+      - source: worker_secrets
+        target: /etc/timeleap/secrets.yaml
+    configs:
+      - source: config
+        target: /etc/timeleap/config.yaml
+    command: worker -s /etc/timeleap/secrets.yaml -c /etc/timeleap/config.yaml
+
+networks:
+  timeleap:
+
+configs:
+  config:
+    file: ./config.yaml
+
+secrets:
+  broker_secrets:
+    file: ./secrets/broker_secrets.yaml
+  worker_secrets:
+    file: ./secrets/worker_secrets.yaml

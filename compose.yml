@@ -2,10 +2,9 @@ services:
   client:
     restart: always
     build:
-      context: ..
-      dockerfile: ./apps/client/Dockerfile
+      dockerfile: apps/client/Dockerfile
     env_file:
-      - ../apps/client/.env
+      - apps/client/.env
     networks:
       - timeleap
     depends_on:
@@ -17,10 +16,9 @@ services:
     depends_on:
       - broker
     build:
-      context: ..
-      dockerfile: ./apps/plugin/Dockerfile
+      dockerfile: apps/plugin/Dockerfile
     env_file:
-      - ../apps/plugin/.env
+      - apps/plugin/.env
     networks:
       - timeleap
 
@@ -58,10 +56,11 @@ networks:
 
 configs:
   config:
-    file: ./config.yaml
+    file: ./timeleap/config.yaml
 
 secrets:
   broker_secrets:
-    file: ./secrets/broker_secrets.yaml
+    file: ./timeleap/secrets/broker_secrets.yaml
   worker_secrets:
-    file: ./secrets/worker_secrets.yaml
+    file: ./timeleap/secrets/worker_secrets.yaml
+  

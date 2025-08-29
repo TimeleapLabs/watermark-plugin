@@ -1,5 +1,5 @@
 import { Identity, OpCodes, Wallet } from '@timeleap/client'
-import { decodeWatermarkImageCall, encodeWatermarkImageResponse } from '@repo/models/watermarker'
+import { decodeWatermarkImageCall, encodeWatermarkImageResponse } from '@shared/models/watermarker'
 import { Uuid25 } from 'uuid25'
 import { Sia } from '@timeleap/sia'
 import sharp from 'sharp'
@@ -9,7 +9,7 @@ const wallet = await Wallet.fromBase58(process.env.PLUGIN_PRIVATE_KEY)
 const appId = process.env.APP_ID ?? 0
 
 Bun.serve({
-    port: 3000,
+    port: 80,
     fetch(req, server) {
         if (server.upgrade(req)) {
             return;
@@ -41,9 +41,12 @@ Bun.serve({
                 ])
                 .toBuffer();
 
-            const response = await wallet.signSia(
+            const estimatedSize =
+                watermarkedImageBuffer.length +
+                512;
 
-                encodeWatermarkImageResponse(Sia.alloc(512), {
+            const response = await wallet.signSia(
+                encodeWatermarkImageResponse(Sia.alloc(estimatedSize), {
                     opcode: OpCodes.RPCResponse,
                     appId,
                     uuid,

@@ -1,6 +1,6 @@
 import { Client, Wallet } from '@timeleap/client'
 import { Sia } from '@timeleap/sia'
-import { WatermarkImage, type Args } from '@repo/models/watermarker'
+import { WatermarkImage, type Args } from '@shared/models/watermarker'
 
 const createClient = async () => {
     const wallet = await Wallet.random()

@@ -4,9 +4,8 @@
   "type": "module",
   "private": true,
   "workspaces": [
-    "client",
-    "plugin",
-    "models"
+    "apps/*",
+    "shared/*"
   ],
   "devDependencies": {
     "@timeleap/client": "^1.5.1",
@@ -20,7 +19,6 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "gm": "^1.25.1",
     "sharp": "^0.34.3"
   }
 }

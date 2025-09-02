@@ -8,6 +8,12 @@ Install dependencies with:
 bun install
 ```
 
+And then:
+
+```bash
+cd shared/models && mkdir dist && bun run --filter @shared/models build
+```
+
 ## Running Timeleap
 
 Initialize the project:
@@ -119,7 +125,7 @@ plugins:
 Either add Broker and Plugin's public key manually in `config.yaml` or make `.env` in root directory containing:
 
 ```env
-WORKER_PUBLIC_KEY= 
+WORKER_PUBLIC_KEY=
 PLUGIN_PRIVATE_KEY=
 BROKER_URI=
 BROKER_PUBLIC_KEY=

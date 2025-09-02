@@ -1,11 +1,10 @@
 {
-  "name": "@repo/models",
+  "name": "@shared/models",
   "version": "1.0.0",
-  "main": "index.ts",
   "type": "module",
   "private": true,
     "scripts": {
-    "build": "sia compile watermarker.sia -o dist/watermarker.ts"
+    "build": "sia compile src/sia/watermarker.sia -o dist/watermarker.ts"
   },
   "exports": {
   "./watermarker": "./dist/watermarker.ts"

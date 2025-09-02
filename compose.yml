@@ -63,4 +63,3 @@ secrets:
     file: ./timeleap/secrets/broker_secrets.yaml
   worker_secrets:
     file: ./timeleap/secrets/worker_secrets.yaml
-  

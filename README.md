@@ -99,6 +99,23 @@ You’ll get two keys:
 
 Save these keys securely.
 
+## Attaching The Plugin To Worker
+
+Raplce this with `plugins: []` inside the `config.yaml`:
+
+```yaml
+plugins:
+  - type: websocket
+    name: swiss.timeleap.watermarker
+    endpoint: ws://swiss.timeleap.watermarker
+    publicKey: ${PLUGIN_PUBLIC_KEY}
+    functions:
+      - name: addWatermarkToImage
+        fee:
+          amount: 1
+          currency: USD
+```
+
 ## Starting the Stack
 
 Once your environment files are ready:

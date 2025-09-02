@@ -116,10 +116,19 @@ plugins:
           currency: USD
 ```
 
+Either add Broker and Plugin's public key manually in `config.yaml` or make `.env` in root directory containing:
+
+```env
+WORKER_PUBLIC_KEY= 
+PLUGIN_PRIVATE_KEY=
+BROKER_URI=
+BROKER_PUBLIC_KEY=
+```
+
 ## Starting the Stack
 
 Once your environment files are ready:
 
 ```bash
-cd timeleap && tlp compose up --build
+tlp compose up --build
 ```
